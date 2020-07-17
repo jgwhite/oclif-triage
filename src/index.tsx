@@ -57,7 +57,6 @@ const UI = ({issues}: {issues: any}) => {
   useInput((input, key) => {
     if (input === 'o') {
       exec(`open ${issue.html_url}`)
-      advance();
     }
     if (input === 'n') {
       advance();
