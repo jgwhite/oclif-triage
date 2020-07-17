@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "name": "Run",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceFolder}/bin/run",
+      "port": 9229,
+      "env": {
+        "NODE_OPTIONS": "--inspect-brk"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}
