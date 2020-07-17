@@ -12,8 +12,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@octokit/rest": "^18.0.1",
-    "ink": "^2.7.1",
-    "ink-table": "^2.0.1",
+    "ink": "^3.0.0-6",
     "react": "^16.13.1",
     "tslib": "^1"
   },

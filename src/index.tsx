@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
 import {Octokit} from '@octokit/rest'
-import React from 'react'
-import {render, Box, Text} from 'ink'
-import Table from 'ink-table'
+import React, {useState} from 'react'
+import {render, Box, Text, Spacer, useInput, useApp} from 'ink'
+import {exec} from 'child_process'
 
 class OclifTriage extends Command {
   static description = 'Jamie’s OCLIF triage tool'
@@ -20,39 +20,63 @@ class OclifTriage extends Command {
       this.error('Please set OCLIF_TRIAGE_TOKEN in your environment')
     }
     const octokit = new Octokit({auth})
-    let {data: repos} = await octokit.repos.listForOrg({
-      org: 'oclif',
-      public: true,
-    })
-    let rows = await Promise.all(
+    const {data:repos} = await octokit.repos.listForOrg({org: 'oclif'})
+    const issuesByRepo = await Promise.all(
       repos.map(async (repo) => {
-        const {data: issues} = await octokit.issues.listForRepo({
-          repo: repo.name,
+        const {data:issuesForRepo} = await octokit.issues.listForRepo({
           owner: repo.owner.login,
-          state: 'open'
-        })
-        const {data:pulls} = await octokit.pulls.list({
           repo: repo.name,
-          owner: repo.owner.login,
-          state: 'open'
+          sort: 'updated',
+          direction: 'desc',
         })
 
-        return {
-          repo: repo.full_name,
-          issues: issues.length,
-          pulls: pulls.length
-        }
+        return issuesForRepo.map(issue => ({ ...issue, repo }))
       })
     )
+    const issues = issuesByRepo.flatMap(_ => _)
 
-    rows = rows.filter(row => row.issues || row.pulls)
+    issues.sort((a, b) => b.updated_at.localeCompare(a.updated_at))
 
-    rows.sort((a, b) => (b.issues + b.pulls) - (a.issues + a.pulls))
-
-    rows = rows.slice(0, 10)
-
-    render(<Table data={rows} />)
+    render(<UI issues={issues} />)
   }
+}
+
+const UI = ({issues}: {issues: any}) => {
+  const {exit} = useApp()
+  const [cursor,setCursor] = useState(0)
+  const issue = issues[cursor]
+
+  const advance = () => {
+    if (cursor < issues.length - 1) {
+      setCursor(cursor + 1)
+    } else {
+      exit()
+    }
+  }
+
+  useInput((input, key) => {
+    if (input === 'o') {
+      exec(`open ${issue.html_url}`)
+      advance();
+    }
+    if (input === 'n') {
+      advance();
+    }
+    if (input === 'q') {
+      exit()
+    }
+  })
+
+  return (
+    <Box borderStyle="double" paddingX={1} flexDirection="column">
+      <Text color="gray">{cursor + 1} of {issues.length}</Text>
+      <Text> </Text>
+      <Text bold>{issue.repo.full_name}</Text>
+      <Text>{issue.title}</Text>
+      <Text> </Text>
+      <Text>(O)pen (N)ext (Q)uit</Text>
+    </Box>
+  )
 }
 
 export = OclifTriage
