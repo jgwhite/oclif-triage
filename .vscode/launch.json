@@ -7,7 +7,7 @@
       "runtimeExecutable": "${workspaceFolder}/bin/run",
       "port": 9229,
       "env": {
-        "NODE_OPTIONS": "--inspect-brk"
+        "TS_NODE_OPTIONS": "--inspect-brk"
       },
       "console": "integratedTerminal"
     }
