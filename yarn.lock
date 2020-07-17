@@ -348,21 +348,6 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/ink-table@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/ink-table/-/ink-table-1.0.1.tgz#64bbde6a75a95983efefd7d07e60cfb540fcc23f"
-  integrity sha512-SKaXG7nfhLcEqj/HRYVSNie3Y0xPwQKEO+T9fXQ68fTNRcFxQhRlanZIk3dt1D0N9hFL5I2qPD70Kj7yrxUsIQ==
-  dependencies:
-    "@types/ink" "^0.5.2"
-
-"@types/ink@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@types/ink/-/ink-0.5.2.tgz#5e51b233d14639ee95df4d3c8b7f7845c51d094c"
-  integrity sha512-yEuhWTRMXJkIWiaM58c5kuRot5HFccv9kjjgy0fBZG0+tYb+sMBaxHNPVqyZXspGGlmwDOQ1d3BsygWpWlW17w==
-  dependencies:
-    "@types/node" "*"
-    "@types/prop-types" "*"
-
 "@types/is-ci@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/is-ci/-/is-ci-2.0.0.tgz#e2b81d0f9275861649d501dbc39a480fbf311459"
